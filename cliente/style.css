@@ -6,7 +6,22 @@ body {
   box-sizing: border-box;
 }
 
-Titulo{}
+#Titulo{
+ box-sizing: border-box;
+  text-align: center;
+}
+
+
+/* #imagen{
+width: 500px;        
+  height: 60px;        
+  object-fit: cover;    
+    display:flex;
+  margin: 0 auto 20px;  
+          
+  
+} */
+
 #info {
   font-size: 2.5rem;
   color: #555;

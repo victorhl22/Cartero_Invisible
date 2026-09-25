@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
@@ -20,7 +20,10 @@ def obtenir_carta(id: int):
     for c in cartes:
         if c["id"] == id:
             return c
-    return {"error": "Carta no trobada"}, 404
+    raise HTTPException(
+        status_code=404,
+        detail="Carta no trobada")
+
 
 @app.get("/cartas")
 def llistar_cartes(limit: int = 10, offset: int = 0):
