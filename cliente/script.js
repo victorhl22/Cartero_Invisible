@@ -13,7 +13,7 @@ titol.textContent = "📮 El Cartero Invisible - Setmana 2";
 titol.setAttribute("data-role", "banner");
 
 const contenidor = document.querySelector("#contenidorCartes");
-contenidor.innerHTML = "<p>Cartes pendents: 0</p>";
+contenidor.innerHTML += "<p>Cartes pendents: 0</p>";
 
 const info = document.querySelector(".info");
 info.style.color = "#2c3e50";

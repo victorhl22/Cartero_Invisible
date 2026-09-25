@@ -2,18 +2,75 @@ body {
   background-color: #f4f1ea;
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+Titulo{}
+#info {
+  font-size: 2.5rem;
+  color: #555;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 h1 {
   color: #2c3e50;
   font-size: 2.5rem;
+  box-sizing: border-box;
 }
 
 section {
   margin: 20px 0;
   padding: 16px;
+  box-sizing: border-box;
 }
 
-h1:hover { color: #0beedb; }              /* canvia de color en passar-hi el ratolí */
+h1:hover { color: #ef1717; }              /* canvia de color en passar-hi el ratolí */
 section:first-child { border-left: 4px solid #17e69a; }
+
+.carta {
+  border: 1px solid #000000;
+  padding: 2rem;
+  margin: 1em;
+  border-radius: 8px;
+  background-color: #eab6ea;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+#contenedorPrincipal {
+  max-width: 800px; margin: 0 auto;
+  box-sizing: border-box;
+}
+
+#cartesPendents {
+  max-width: 800px; margin: 0 auto;
+  box-sizing: border-box;
+  
+}
+
+#btnSaluda{
+  box-sizing: border-box;
+  display: block;
+  margin: 20px auto;
+  margin-top: 40px;
+  padding: 20px;
+  color: #0f010d;
+  background-color: #d80d9b;
+  border-radius: 8px;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  margin: 0 auto;
+  background-color: #eab6ea;
+  color: #080000;
+  width: 100%;
+  box-sizing: border-box;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+}
