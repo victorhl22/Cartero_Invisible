@@ -1,64 +1,55 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Cartero Invisible</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 
 <body>
 
-  <div id="contenedorPrincipal">
-
-    <div id="Titulo">
-  <header>  
-      
-    <h1> 📮 El Cartero Invisible - Setmana 2</h1>
+  <header>
+    <h1 id="titolPrincipal">El Cartero Invisible</h1>
   </header>
-</div>
 
-  <h2 id="info">Benvingut al teu buzon virtual</h2>
+  <main>
+    <div style="max-width: 800px; margin: 0 auto;">
 
+      <h2 class="info">Benvingut al teu buzón virtual</h2>
+
+      <div id="contenidorCartes">
+
+        <div class="carta">
+          <h3>De: Maria</h3>
+          <p>Hola, com estàs? T'escric des del passat.</p>
+        </div>
+
+      </div>
+
+      <section id="llistatCartes">
+      <!-- de moment buit: aquí aniran les cartes -->
+      </section>
+
+      <section id="formulariCarta">
+        <!-- de moment buit: aquí anirà el formulari -->
+      </section>
+
+      <button id="btnSaluda">Saluda'm!</button>
+
+      <button id="btnAfegir">Afegir carta</button>
+    </div>
+
+  </main>
+ 
+  
+  <footer>
+    <marquee>¡Bienvenido al Cartero Invisible!</marquee>  
     
-
-  <!--<div id="imagen">
-  <img src="https://i.chzbgr.com/full/9144084736/hB36E0307/animal-mailbox-tree" alt="Burrito Sabanero"></img>
-  </div>-->
-
-
-  <div id="contenidorCartes">
-
-              <!--Buit per a futures cartes.-->
-              <div class="carta">
-                
-              <h3>De: Maria</h3>
-
-              <p>Hola, com estàs? T'escric des del passat.</p>
-            </div>
-
-  </div>
-  
-  
-  <section id="llistatCartes">
-    <!-- de moment buit: aquí aniran les cartes -->
-  </section>
-
-
-  <section id="formulariCarta">
-    <!-- de moment buit: aquí anirà el formulari -->
-  </section>
-
-  </head>
-
-<button id="btnSaluda">Saluda'm!</button>
-</div>
+  </footer>
 
 </body>
-
-<footer id="footer">
-  <marquee><p>&copy; 2026 El Cartero Invisible</p></marquee>
-</footer>
 
 </html>
