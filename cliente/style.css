@@ -10,9 +10,24 @@ body {
  display:flex;
  justify-content: center;
  align-items: center;
+  padding:30px;
+  margin: 0 auto;
+  background-color: #eab6ea;
 
 }
 
+#buzon {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    background: #f16ed7;
+    color: white;
+    padding: 36px;
+    font-size: 3rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 100;
+}
 
 /* #imagen{
 width: 500px;        
@@ -47,7 +62,9 @@ section:first-child { border-left: 4px solid #17e69a; }
 .carta {
   border: 1px solid #000000;
   padding: 2rem;
-  margin: 1em;
+  float: left; 
+  width: 45%; 
+  margin: 2.5%;
   border-radius: 8px;
   background-color: #eab6ea;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);

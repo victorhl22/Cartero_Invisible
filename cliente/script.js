@@ -2,20 +2,23 @@ function saluda() {
   alert("Hola, crack!");
 }
 
+function inicializar(){
+
 const boto = document.getElementById("btnSaluda");
-boto.addEventListener("click", saluda);
+  boto.addEventListener("click", saluda);
 
 
 const titol = document.querySelector("#titolPrincipal");
+  titol.textContent = "📮 El Cartero Invisible – Setmana 3";
+  titol.setAttribute("data-role", "banner");
 
-titol.textContent = "📮 El Cartero Invisible - Setmana 2";
-titol.setAttribute("data-role", "banner");
 
 const contenidor = document.querySelector("#contenidorCartes");
-contenidor.innerHTML += "<p>Cartes pendents: 0 </p>";
+  contenidor.innerHTML += "<p>Cartes pendents: 0</p>";
+
 
 const info = document.querySelector(".info");
-info.style.color = "#2c3e50";
+  info.style.color = "#2c3e50";
 
 const cartesSimulades = [
     { id: 1, remitent: "Maria", contingut: "Hola, com estàs? T'escric des del passat." },
@@ -23,7 +26,18 @@ const cartesSimulades = [
     { id: 3, remitent: "Laia", contingut: "Recorda que el temps és relatiu." }
 ];
 
-function renderitzarCartes(cartes) {
+document.querySelector("#btnAfegir").addEventListener("click", () => {
+    cartesSimulades.push({
+        id: cartesSimulades.length + 1,
+        remitent: "Carter " + (cartesSimulades.length + 1),
+        contingut: "Aquesta carta s'acaba de crear dinàmicament!"
+    });
+    renderitzarCartes(cartesSimulades);
+});
+
+}
+
+export function renderitzarCartes(cartes) {
     const contenidor = document.querySelector("#contenidorCartes");
     contenidor.innerHTML = "";   // 1. Buidem el taulell
 
@@ -31,7 +45,7 @@ function renderitzarCartes(cartes) {
         // 2. Fabriquem la carta
         const divCarta = document.createElement("div");
         divCarta.className = "carta";
-	
+
         const titol = document.createElement("h3");
         titol.textContent = `De: ${carta.remitent}`;
 
@@ -49,22 +63,12 @@ function renderitzarCartes(cartes) {
 
         // 4. Pengem la carta al taulell
         contenidor.appendChild(divCarta);
-
     });
-// Crida-la en carregar la pàgina
-document.addEventListener("DOMContentLoaded", () => {
-    renderitzarCartes(cartesSimulades);
-});
 }
 
+// Executa-ho només si estem al navegador (evitant problemes a Node/Jest)
+if (typeof document !== 'undefined') {
+    document.addEventListener("DOMContentLoaded", inicializar);
+};
 
-
-document.querySelector("#btnAfegir").addEventListener("click", () => {
-    cartesSimulades.push({
-        id: cartesSimulades.length + 1,
-        remitent: "Carter " + (cartesSimulades.length + 1),
-        contingut: "Aquesta carta s'acaba de crear dinàmicament!"
-    });
-    renderitzarCartes(cartesSimulades);
-});
 

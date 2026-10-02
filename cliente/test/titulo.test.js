@@ -10,4 +10,6 @@ test('canvia el text i l\'estil del títol', () => {
   expect(titol.textContent).toBe('📮 El Cartero Invisible – Setmana 2');
   expect(titol.style.color).toBe('rgb(44, 62, 80)');
   expect(titol.getAttribute('data-role')).toBe('banner');
+
+  
 });
