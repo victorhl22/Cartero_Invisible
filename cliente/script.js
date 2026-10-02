@@ -37,7 +37,7 @@ document.querySelector("#btnAfegir").addEventListener("click", () => {
 
 }
 
-export function renderitzarCartes(cartes) {
+function renderitzarCartes(cartes) {
     const contenidor = document.querySelector("#contenidorCartes");
     contenidor.innerHTML = "";   // 1. Buidem el taulell
 
