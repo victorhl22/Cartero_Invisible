@@ -3,8 +3,21 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+#Modelo Pydantic
+class Carta(BaseModel):
+    remitent: str
+    destinatari: str
+    contingut: str
+    personatge: str    # per a la IA (de moment pot ser opcional)
+
 #Llista global de cartes buides.
-cartes = []
+cartes = [
+        {"id": 1, "remitent": "Maria", "contingut": "Hola, com estàs?", "personatge": "Einstein"},
+
+
+]
+
+#El get general.
 
 @app.get("/")
 def root():
@@ -28,20 +41,6 @@ def obtenir_carta(id: int):
         status_code=404,
         detail="Carta no trobada")
 
-
-@app.get("/cartas")
-def llistar_cartes(limit: int = 10, offset: int = 0):
-  
-    return cartes[offset:offset+limit]
-
-class Carta(BaseModel):
-    remitent: str
-    destinatari: str
-    contingut: str
-    personatge: str    # per a la IA (de moment pot ser opcional)
-
-
-
 #No es GET sino POST y lo que hace es entregar la carta en vez de obtener-las.
 @app.post("/cartas")
 def crear_carta(carta: Carta):
@@ -49,3 +48,21 @@ def crear_carta(carta: Carta):
     nova_carta["id"] = len(cartes) + 1  # assigna un ID únic
     cartes.append(nova_carta)
     return nova_carta
+
+
+
+@app.get("/cartas")
+def llistar_cartes(limit: int = 10, offset: int = 0, personatge: str = None):
+    if personatge:
+        # Se usa c.get() para evitar un KeyError si el campo no existe en alguna carta
+        cartesFiltrades = [c for c in cartes if c.get("personatge") == personatge]
+    else:
+        cartesFiltrades = cartes
+    
+    return cartesFiltrades[offset:offset + limit]
+
+
+
+
+
+
