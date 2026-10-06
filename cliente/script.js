@@ -35,6 +35,11 @@ document.querySelector("#btnAfegir").addEventListener("click", () => {
     renderitzarCartes(cartesSimulades);
 });
 
+form.addEventListener("submit", (event) => {
+    event.preventDefault();   // ⭐ atura la recàrrega
+    // ...valida i processa les dades
+});
+
 }
 
 function renderitzarCartes(cartes) {
@@ -70,5 +75,7 @@ function renderitzarCartes(cartes) {
 if (typeof document !== 'undefined') {
     document.addEventListener("DOMContentLoaded", inicializar);
 };
+
+export {renderitzarCartes};
 
 

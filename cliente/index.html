@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>El Cartero Invisible</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <script type="module" src="script.js"></script>
 </head>
 
 <body>
@@ -16,12 +16,30 @@
   </header>
 
   <main>
+
     <div style="max-width: 800px; margin: 0 auto;">
+
       <div id="buzon">📮</div>
-      <h2 class="info">Benvingut al teu buzón virtual</h2>
+
+          <h2 class="info">Benvingut al teu buzón virtual</h2>
+
+    <form id="formCarta">
+
+          <input type="text" id="remitent" placeholder="El teu nom" required>
+          
+          <input type="text" id="destinatari" placeholder="A qui va dirigida?" required>
+          
+          <textarea id="contingut" placeholder="Escriu la teva carta..." required></textarea>
+          
+          <input type="text" id="personatge" placeholder="A quin personatge escrius? (ex: Einstein)">
+        
+          <button type="submit">Enviar carta</button>
+
+  </form>
 
       <div id="contenidorCartes">
 
+        
         <div class="carta">
           <h3>De: Maria</h3>
           <p>Hola, com estàs? T'escric des del passat.</p>
