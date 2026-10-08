@@ -5,6 +5,8 @@ let cartesSimulades = [
     { id: 3, remitent: "Laia", destinatari: "Joan", contingut: "Recorda que el temps és relatiu." }
 
 ];
+
+//Variable global contador para asignar IDs únicos a nuevas cartas
  let formulariId = cartesSimulades.length + 1; // ID inicial para nuevas cartas
 
 function saluda() {
@@ -41,7 +43,7 @@ function inicializar() {
     if (btnAfegir) {
         btnAfegir.addEventListener("click", () => {
             cartesSimulades.push({
-                id: formulariId++, // ID único usando timestamp
+                id: formulariId++, // ID único creado con el contador global sobre las cartas generadas por el form.
                 remitent: "Carter " + (cartesSimulades.length + 1),
                 destinatari: "Anònim",
                 contingut: "Aquesta carta s'acaba de crear dinàmicament!"

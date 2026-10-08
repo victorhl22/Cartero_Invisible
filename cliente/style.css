@@ -60,15 +60,16 @@ h1:hover { color: #ef1717; }              /* canvia de color en passar-hi el rat
 section:first-child { border-left: 4px solid #17e69a; }
 
 .carta {
+  display: inline-block;
   border: 1px solid #000000;
-  padding: 2rem;
-  float: left; 
-  width: 45%; 
-  margin: 2.5%;
+  padding: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 35px;
   border-radius: 8px;
   background-color: #eab6ea;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  box-sizing: border-box;
+ 
 }
 
 #contenedorPrincipal {
@@ -93,6 +94,11 @@ section:first-child { border-left: 4px solid #17e69a; }
   border-radius: 8px;
 }
 
+#btnSaluda:hover{
+  background-color: #ff00ff;
+  color: #ffffff;
+}
+
 .btnEliminar{
   box-sizing: border-box;
   display: block;
@@ -102,6 +108,10 @@ section:first-child { border-left: 4px solid #17e69a; }
   color: #0f010d;
   background-color: #e20a0a;
   border-radius: 8px;
+}
+.btnEliminar:hover{
+  background-color: #ff0000;
+  color: #ffffff;
 }
 
 #btnAfegir{
@@ -113,6 +123,11 @@ section:first-child { border-left: 4px solid #17e69a; }
   color: #0f010d;
   background-color: #d80d9b;
   border-radius: 8px;
+}
+
+#btnAfegir:hover{
+  background-color: #ff00ff;
+  color: #ffffff;
 }
 
 footer {
