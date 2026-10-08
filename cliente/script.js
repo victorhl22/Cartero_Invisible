@@ -1,53 +1,115 @@
+// Array global de cartas
+let cartesSimulades = [
+    { id: 1, remitent: "Maria", destinatari: "Joan", contingut: "Hola, com estàs? T'escric des del passat." },
+    { id: 2, remitent: "Joan", destinatari: "Maria", contingut: "Avui he vist un carter misteriós." },
+    { id: 3, remitent: "Laia", destinatari: "Joan", contingut: "Recorda que el temps és relatiu." }
+
+];
+ let formulariId = cartesSimulades.length + 1; // ID inicial para nuevas cartas
+
 function saluda() {
-  alert("Hola, crack!");
+    alert("Hola, crack!");
 }
 
-function inicializar(){
+function inicializar() {
+    const boto = document.getElementById("btnSaluda");
+    if (boto) boto.addEventListener("click", saluda);
 
-const boto = document.getElementById("btnSaluda");
-  boto.addEventListener("click", saluda);
+    const titol = document.querySelector("#titolPrincipal");
+    if (titol) {
+        titol.textContent = "📮 El Cartero Invisible – Setmana 3";
+        titol.setAttribute("data-role", "banner");
+    }
 
+    const info = document.querySelector(".info");
+    if (info) info.style.color = "#2c3e50";
 
-const titol = document.querySelector("#titolPrincipal");
-  titol.textContent = "📮 El Cartero Invisible – Setmana 3";
-  titol.setAttribute("data-role", "banner");
+    // Listener del formulario
+    const form = document.querySelector("form");
+    if (form) {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault(); // Detiene la recarga de la página
 
+            // Ahora crearCarta() devuelve true si todo fue bien
+            if (crearCarta()) {
+                form.reset(); // Limpia los inputs del formulario
+            }
+        });
+    }
 
-const contenidor = document.querySelector("#contenidorCartes");
-  contenidor.innerHTML += "<p>Cartes pendents: 0</p>";
+    const btnAfegir = document.querySelector("#btnAfegir");
+    if (btnAfegir) {
+        btnAfegir.addEventListener("click", () => {
+            cartesSimulades.push({
+                id: formulariId++, // ID único usando timestamp
+                remitent: "Carter " + (cartesSimulades.length + 1),
+                destinatari: "Anònim",
+                contingut: "Aquesta carta s'acaba de crear dinàmicament!"
+            });
+            renderitzarCartes(cartesSimulades);
+        });
+    }
 
+    // Delegación de eventos para eliminar cartas
+    const contenidorCartes = document.querySelector("#contenidorCartes");
+    if (contenidorCartes) {
+        contenidorCartes.addEventListener("click", (event) => {
+            const botoEliminar = event.target.closest(".btnEliminar");
+            if (botoEliminar) {
+                EliminarCarta(botoEliminar.dataset.id);
+            }
+        });
+    }
 
-const info = document.querySelector(".info");
-  info.style.color = "#2c3e50";
-
-const cartesSimulades = [
-    { id: 1, remitent: "Maria", contingut: "Hola, com estàs? T'escric des del passat." },
-    { id: 2, remitent: "Joan", contingut: "Avui he vist un carter misteriós." },
-    { id: 3, remitent: "Laia", contingut: "Recorda que el temps és relatiu." }
-];
-
-document.querySelector("#btnAfegir").addEventListener("click", () => {
-    cartesSimulades.push({
-        id: cartesSimulades.length + 1,
-        remitent: "Carter " + (cartesSimulades.length + 1),
-        contingut: "Aquesta carta s'acaba de crear dinàmicament!"
-    });
+    // Renderizamos el estado inicial
     renderitzarCartes(cartesSimulades);
-});
+}
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault();   // ⭐ atura la recàrrega
-    // ...valida i processa les dades
-});
+function crearCarta() {
+    // 1. Obtener inputs y sus valores
+    const remitentInput = document.querySelector("#remitent");
+    const destinatariInput = document.querySelector("#destinatari");
+    const contingutInput = document.querySelector("#contingut");
 
+   
+
+    const remitent = remitentInput.value.trim();
+    const destinatari = destinatariInput.value.trim();
+    const contingut = contingutInput.value.trim();
+
+    // 2. Validar campos vacíos
+    if (remitent === "" || destinatari === "" || contingut === "") {
+        alert("Tots els camps (remitent, destinatari i contingut) són obligatoris!");
+        return false; // Retorna false si la validación falla
+    }
+
+    // 3. Agregar objeto al array con ID único (Timestamp)
+    cartesSimulades.push({
+        id: formulariId++,
+        remitent: remitent,
+        destinatari: destinatari,
+        contingut: contingut
+    });
+
+    // 4. Actualizar la vista
+    renderitzarCartes(cartesSimulades);
+
+    return true; // Retorna true para confirmar que la carta se creó
+}
+
+function EliminarCarta(id) {
+    const idNumero = Number(id);
+    cartesSimulades = cartesSimulades.filter(carta => carta.id !== idNumero);
+    renderitzarCartes(cartesSimulades);
 }
 
 function renderitzarCartes(cartes) {
     const contenidor = document.querySelector("#contenidorCartes");
-    contenidor.innerHTML = "";   // 1. Buidem el taulell
+    if (!contenidor) return;
+
+    contenidor.innerHTML = "";
 
     cartes.forEach(carta => {
-        // 2. Fabriquem la carta
         const divCarta = document.createElement("div");
         divCarta.className = "carta";
 
@@ -59,23 +121,24 @@ function renderitzarCartes(cartes) {
 
         const idSpan = document.createElement("span");
         idSpan.textContent = `#${carta.id}`;
-        idSpan.setAttribute("data-id", carta.id);
 
-        // 3. Muntem l'estructura
+        const btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "Eliminar";
+        btnEliminar.className = "btnEliminar";
+        btnEliminar.dataset.id = carta.id;
+
         divCarta.appendChild(titol);
         divCarta.appendChild(paragraf);
         divCarta.appendChild(idSpan);
+        divCarta.appendChild(btnEliminar);
 
-        // 4. Pengem la carta al taulell
         contenidor.appendChild(divCarta);
     });
 }
 
-// Executa-ho només si estem al navegador (evitant problemes a Node/Jest)
+// Inicialización de la app
 if (typeof document !== 'undefined') {
     document.addEventListener("DOMContentLoaded", inicializar);
-};
+}
 
-export {renderitzarCartes};
-
-
+export { renderitzarCartes };
