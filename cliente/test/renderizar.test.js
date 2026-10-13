@@ -2,6 +2,7 @@
 import '@testing-library/jest-dom';
 import { renderitzarCartes } from '../script.js';
 
+
 test('renderitza les cartes correctament', () => {
     const cartes = [
         { id: 1, remitent: 'Maria', contingut: 'Hola!' },
