@@ -1,23 +1,10 @@
 [
   {
-    "remitent": "Test",
-    "destinatari": "Test",
-    "contingut": "Test",
-    "personatge": "Test",
-    "id": 3
-  },
-  {
-    "remitent": "Pau",
-    "destinatari": "Anna",
-    "contingut": "Hola Anna!",
-    "personatge": "Einstein",
-    "id": 3
-  },
-  {
-    "remitent": "Test",
-    "destinatari": "Test",
-    "contingut": "Test",
-    "personatge": "Test",
-    "id": 4
+    "remitent": "Victor",
+    "destinatari": "Github",
+    "contingut": "prueba para pasar el test",
+    "personatge": "string",
+    "id": 1
   }
+
 ]

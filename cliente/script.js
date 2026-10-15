@@ -3,11 +3,10 @@ let cartesSimulades = [
     { id: 1, remitent: "Maria", destinatari: "Joan", contingut: "Hola, com estàs? T'escric des del passat." },
     { id: 2, remitent: "Joan", destinatari: "Maria", contingut: "Avui he vist un carter misteriós." },
     { id: 3, remitent: "Laia", destinatari: "Joan", contingut: "Recorda que el temps és relatiu." }
-
 ];
 
-//Variable global contador para asignar IDs únicos a nuevas cartas
- let formulariId = cartesSimulades.length + 1; // ID inicial para nuevas cartas
+// Variable global contador para asignar IDs únicos a nuevas cartas
+let formulariId = cartesSimulades.length + 1;
 
 function saluda() {
     alert("Hola, crack!");
@@ -30,11 +29,9 @@ function inicializar() {
     const form = document.querySelector("form");
     if (form) {
         form.addEventListener("submit", (event) => {
-            event.preventDefault(); // Detiene la recarga de la página
-
-            // Ahora crearCarta() devuelve true si todo fue bien
+            event.preventDefault();
             if (crearCarta()) {
-                form.reset(); // Limpia los inputs del formulario
+                form.reset();
             }
         });
     }
@@ -43,7 +40,7 @@ function inicializar() {
     if (btnAfegir) {
         btnAfegir.addEventListener("click", () => {
             cartesSimulades.push({
-                id: formulariId++, // ID único creado con el contador global sobre las cartas generadas por el form.
+                id: formulariId++,
                 remitent: "Carter " + (cartesSimulades.length + 1),
                 destinatari: "Anònim",
                 contingut: "Aquesta carta s'acaba de crear dinàmicament!"
@@ -52,40 +49,48 @@ function inicializar() {
         });
     }
 
-    // Delegación de eventos para eliminar cartas
-    const contenidorCartes = document.querySelector("#contenidorCartes");
-    if (contenidorCartes) {
-        contenidorCartes.addEventListener("click", (event) => {
-            const botoEliminar = event.target.closest(".btnEliminar");
-            if (botoEliminar) {
-                EliminarCarta(botoEliminar.dataset.id);
+    // Delegación de eventos para eliminar cartas (funciona en tarjetas y en tabla)
+    document.addEventListener("click", (event) => {
+        const botoEliminar = event.target.closest(".btnEliminar");
+        if (botoEliminar) {
+            EliminarCarta(botoEliminar.dataset.id);
+        }
+    });
+
+    // Control de visibilidad de la tabla
+    const btnMostrarTaula = document.querySelector("#btnMostrarTaula");
+    const taulaCartes = document.querySelector("#taulaCartes");
+
+    if (btnMostrarTaula && taulaCartes) {
+        btnMostrarTaula.addEventListener("click", () => {
+            if (taulaCartes.style.display === "none" || taulaCartes.style.display === "") {
+                taulaCartes.style.display = "table";
+                btnMostrarTaula.textContent = "Ocultar taula";
+            } else {
+                taulaCartes.style.display = "none";
+                btnMostrarTaula.textContent = "Mostrar taula";
             }
         });
     }
 
-    // Renderizamos el estado inicial
+    // Renderizado del estado inicial dentro de inicializar()
     renderitzarCartes(cartesSimulades);
 }
 
 function crearCarta() {
-    // 1. Obtener inputs y sus valores
     const remitentInput = document.querySelector("#remitent");
     const destinatariInput = document.querySelector("#destinatari");
     const contingutInput = document.querySelector("#contingut");
-
-   
 
     const remitent = remitentInput.value.trim();
     const destinatari = destinatariInput.value.trim();
     const contingut = contingutInput.value.trim();
 
-    // 2. Validar campos vacíos
     if (remitent === "" || destinatari === "" || contingut === "") {
         alert("Tots els camps (remitent, destinatari i contingut) són obligatoris!");
-        return false; // Retorna false si la validación falla
+        return false;
     }
 
-    // 3. Agregar objeto al array con ID único (Timestamp)
     cartesSimulades.push({
         id: formulariId++,
         remitent: remitent,
@@ -93,10 +98,8 @@ function crearCarta() {
         contingut: contingut
     });
 
-    // 4. Actualizar la vista
     renderitzarCartes(cartesSimulades);
-
-    return true; // Retorna true para confirmar que la carta se creó
+    return true;
 }
 
 function EliminarCarta(id) {
@@ -106,36 +109,55 @@ function EliminarCarta(id) {
 }
 
 function renderitzarCartes(cartes) {
+    // 1. Renderizado en tarjetas (#contenidorCartes)
     const contenidor = document.querySelector("#contenidorCartes");
-    if (!contenidor) return;
+    if (contenidor) {
+        contenidor.innerHTML = "";
+        cartes.forEach(carta => {
+            const divCarta = document.createElement("div");
+            divCarta.className = "carta";
 
-    contenidor.innerHTML = "";
+            const titol = document.createElement("h3");
+            titol.textContent = `De: ${carta.remitent}`;
 
-    cartes.forEach(carta => {
-        const divCarta = document.createElement("div");
-        divCarta.className = "carta";
+            const paragraf = document.createElement("p");
+            paragraf.textContent = carta.contingut;
 
-        const titol = document.createElement("h3");
-        titol.textContent = `De: ${carta.remitent}`;
+            const idSpan = document.createElement("span");
+            idSpan.textContent = `#${carta.id}`;
 
-        const paragraf = document.createElement("p");
-        paragraf.textContent = carta.contingut;
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "Eliminar";
+            btnEliminar.className = "btnEliminar";
+            btnEliminar.dataset.id = carta.id;
 
-        const idSpan = document.createElement("span");
-        idSpan.textContent = `#${carta.id}`;
+            divCarta.appendChild(titol);
+            divCarta.appendChild(paragraf);
+            divCarta.appendChild(idSpan);
+            divCarta.appendChild(btnEliminar);
 
-        const btnEliminar = document.createElement("button");
-        btnEliminar.textContent = "Eliminar";
-        btnEliminar.className = "btnEliminar";
-        btnEliminar.dataset.id = carta.id;
+            contenidor.appendChild(divCarta);
+        });
+    }
 
-        divCarta.appendChild(titol);
-        divCarta.appendChild(paragraf);
-        divCarta.appendChild(idSpan);
-        divCarta.appendChild(btnEliminar);
-
-        contenidor.appendChild(divCarta);
-    });
+    // 2. Renderizado en formato tabla (#taulaCartes tbody)
+    const cosTaula = document.querySelector("#taulaCartes tbody");
+    if (cosTaula) {
+        cosTaula.innerHTML = "";
+        cartes.forEach(carta => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>#${carta.id}</td>
+                <td>${carta.remitent}</td>
+                <td>${carta.destinatari}</td>
+                <td class="contingut-cell" title="${carta.contingut}">${carta.contingut}</td>
+                <td>
+                    <button class="btnEliminar" data-id="${carta.id}">Eliminar</button>
+                </td>
+            `;
+            cosTaula.appendChild(tr);
+        });
+    }
 }
 
 // Inicialización de la app

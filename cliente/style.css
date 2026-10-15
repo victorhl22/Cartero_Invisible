@@ -6,38 +6,89 @@ body {
   box-sizing: border-box;
 }
 
-#titolPrincipal{
- display:flex;
- justify-content: center;
- align-items: center;
-  padding:30px;
+#titolPrincipal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
   margin: 0 auto;
   background-color: #eab6ea;
-
 }
+
+#btnMostrarTaula {
+  box-sizing: border-box;
+  display: block;
+  margin: 20px auto;
+  margin-top: 40px;
+  padding: 20px;
+  color: #0f010d;
+  background-color: #d80d9b;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ==========================================
+   Estils de la Taula (#taulaCartes)
+   ========================================== */
+
+#taulaCartes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: #ffffff;
+}
+
+/* Vores i espai entre les cel·les */
+#taulaCartes th,
+#taulaCartes td {
+  border: 1px solid #dcdcdc;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+/* Capçalera de la taula */
+#taulaCartes th {
+  background-color: #cd06f1;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Colors alterns a les files (Zebra Striping) */
+#taulaCartes tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+#taulaCartes tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+/* Truncat per a la columna «Contingut» */
+.contingut-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+/* ==========================================
+   Buzón (Fixat i Z-Index)
+   ========================================== */
 
 #buzon {
-    position: fixed;
-    bottom: 60px;
-    right: 20px;
-    background: #f16ed7;
-    color: white;
-    padding: 36px;
-    font-size: 3rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 100;
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  background: #f16ed7;
+  color: white;
+  padding: 36px;
+  font-size: 3rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000; /* Comentario cerrado correctamente */
 }
 
-/* #imagen{
-width: 500px;        
-  height: 60px;        
-  object-fit: cover;    
-    display:flex;
-  margin: 0 auto 20px;  
-} */
-
-#info {
+/* Cambiado a .info (clase) para coincidir con la etiqueta <h2 class="info"> */
+.info {
   font-size: 2.5rem;
   color: #555;
   box-sizing: border-box;
@@ -50,40 +101,33 @@ h1 {
   box-sizing: border-box;
 }
 
+h1:hover { 
+  color: #ef1717; 
+}
+
 section {
   margin: 20px 0;
   padding: 16px;
   box-sizing: border-box;
 }
 
-h1:hover { color: #ef1717; }              /* canvia de color en passar-hi el ratolí */
-section:first-child { border-left: 4px solid #17e69a; }
+section:first-child { 
+  border-left: 4px solid #17e69a; 
+}
 
 .carta {
-  display: inline-block;
+  display: block;
   border: 1px solid #000000;
   padding: 0.8rem;
   width: 100%;
   box-sizing: border-box;
-  margin: 35px;
+  margin: 20px 0;
   border-radius: 8px;
   background-color: #eab6ea;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
- 
 }
 
-#contenedorPrincipal {
-  max-width: 800px; margin: 0 auto;
-  box-sizing: border-box;
-}
-
-#cartesPendents {
-  max-width: 800px; margin: 0 auto;
-  box-sizing: border-box;
-  
-}
-
-#btnSaluda{
+#btnSaluda {
   box-sizing: border-box;
   display: block;
   margin: 20px auto;
@@ -92,29 +136,30 @@ section:first-child { border-left: 4px solid #17e69a; }
   color: #0f010d;
   background-color: #d80d9b;
   border-radius: 8px;
+  cursor: pointer;
 }
 
-#btnSaluda:hover{
+#btnSaluda:hover {
   background-color: #ff00ff;
   color: #ffffff;
 }
 
-.btnEliminar{
+/* Ajuste de padding para no deformar la tabla */
+.btnEliminar {
   box-sizing: border-box;
-  display: block;
-  margin: 20px auto;
-  margin-top: 40px;
-  padding: 20px;
-  color: #0f010d;
-  background-color: #e20a0a;
-  border-radius: 8px;
-}
-.btnEliminar:hover{
-  background-color: #ff0000;
+  padding: 8px 12px;
   color: #ffffff;
+  background-color: #e20a0a;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-#btnAfegir{
+.btnEliminar:hover {
+  background-color: #ff0000;
+}
+
+#btnAfegir {
   box-sizing: border-box;
   display: block;
   margin: 20px auto;
@@ -123,9 +168,10 @@ section:first-child { border-left: 4px solid #17e69a; }
   color: #0f010d;
   background-color: #d80d9b;
   border-radius: 8px;
+  cursor: pointer;
 }
 
-#btnAfegir:hover{
+#btnAfegir:hover {
   background-color: #ff00ff;
   color: #ffffff;
 }
