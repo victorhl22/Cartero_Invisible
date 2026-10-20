@@ -33,7 +33,7 @@ async def test_create_carta():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         payload = {"remitent": "Pau", "destinatari": "Anna", "contingut": "Hola Anna!", "personatge": "Einstein"}
         response = await ac.post("/cartas", json=payload)
-        assert response.status_code == 200   # o 201 si l'has configurat
+        assert response.status_code == 201   # o 201 si l'has configurat
         assert response.json()["id"] is not None
         assert response.json()["remitent"] == "Pau"
 
@@ -67,3 +67,16 @@ async def test_delete_carta():
     with open("cartas.json", "r") as f:
         dades = json.load(f)
     assert not any(c["id"] == 1 for c in dades)
+
+@pytest.mark.asyncio
+async def test_cors_headers():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.get("/cartas", headers={"Origin": "http://127.0.0.1:5500"})
+        assert "access-control-allow-origin" in response.headers
+
+@pytest.mark.asyncio
+async def test_get_cartes():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.get("/cartas")
+        assert response.status_code == 200
+        assert isinstance(response.json(), list)

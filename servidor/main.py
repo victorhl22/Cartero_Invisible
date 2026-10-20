@@ -1,12 +1,23 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 import json
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5500", "http://localhost:5500"],  # el port del teu client
+    allow_credentials=True,
+    allow_methods=["*"],      # GET, POST, PUT, DELETE…
+    allow_headers=["*"],
+)
 
 DATA_FILE = "cartas.json";
 
-app = FastAPI()
+
 
 def cargar_cartes():
     """Llegeix les cartes del fitxer. Si no existeix, torna una llista buida."""
@@ -25,7 +36,6 @@ class Carta(BaseModel):
     remitent: str
     destinatari: str
     contingut: str
-    personatge: str    # per a la IA (de moment pot ser opcional)
 
 cartes = cargar_cartes();
 
@@ -35,17 +45,17 @@ cartes = cargar_cartes();
 def root():
     return {"missatge": "Hola, món!"}
 
-@app.get("/cartas/{id}")
+@app.get("/cartas/{id}", status_code=status.HTTP_200_OK)
 def obtenir_carta(id: int):
     # Dades simulades (més endavant es llegiran de fitxer)
-    cartes = [
-        {"id": 1, "remitent": "Maria", "contingut": "Hola, com estàs?"},
-        {"id": 2, "remitent": "Joan", "contingut": "T'escric des del passat."},
-        {"id": 3, "remitent": "Javier", "contingut": "JAvier ibarra el mejor de españa."},
-        {"id": 4, "remitent": "Ali", "contingut": "Tiene como muchos amegos y mobiles."},
-        {"id": 5, "remitent": "Sara", "contingut": "La neo exnovia de auonplay."},
-        {"id": 6, "remitent": "Iker", "contingut": "El mejor portero del real madrid."},
-    ]
+    ##cartes = [
+    #    {"id": 1, "remitent": "Maria", "contingut": "Hola, com estàs?"},
+    #    {"id": 2, "remitent": "Joan", "contingut": "T'escric des del passat."},
+    #   {"id": 3, "remitent": "Javier", "contingut": "JAvier ibarra el mejor de españa."},
+    #    {"id": 4, "remitent": "Ali", "contingut": "Tiene como muchos amegos y mobiles."},
+    #    {"id": 5, "remitent": "Sara", "contingut": "La neo exnovia de auonplay."},
+    #    {"id": 6, "remitent": "Iker", "contingut": "El mejor portero del real madrid."},
+    #]
     for c in cartes:
         if c["id"] == id:
             return c
@@ -54,7 +64,7 @@ def obtenir_carta(id: int):
         detail="Carta no trobada")
 
 #No es GET sino POST y lo que hace es entregar la carta en vez de obtener-las.
-@app.post("/cartas")
+@app.post("/cartas", status_code=status.HTTP_201_CREATED)
 def crear_carta(carta: Carta):
     nova_carta = carta.model_dump()          # converteix el model a diccionari
     nova_carta["id"] = len(cartes) + 1  # assigna un ID únic
@@ -64,7 +74,7 @@ def crear_carta(carta: Carta):
 
 
 
-@app.get("/cartas")
+@app.get("/cartas", status_code=status.HTTP_200_OK)
 def llistar_cartes(limit: int = 10, offset: int = 0, personatge: str = None):
     if personatge:
         # Se usa c.get() para evitar un KeyError si el campo no existe en alguna carta
@@ -74,7 +84,7 @@ def llistar_cartes(limit: int = 10, offset: int = 0, personatge: str = None):
     
     return cartesFiltrades[offset:offset + limit]
 
-@app.delete("/cartas/{id}")
+@app.delete("/cartas/{id}", status_code=status.HTTP_200_OK)
 def eliminar_carta(id: int):
     global cartes
     for c in cartes:

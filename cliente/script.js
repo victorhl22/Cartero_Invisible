@@ -1,12 +1,12 @@
 // Array global de cartas
-let cartesSimulades = [
+/*let cartesSimulades = [
     { id: 1, remitent: "Maria", destinatari: "Joan", contingut: "Hola, com estàs? T'escric des del passat." },
     { id: 2, remitent: "Joan", destinatari: "Maria", contingut: "Avui he vist un carter misteriós." },
     { id: 3, remitent: "Laia", destinatari: "Joan", contingut: "Recorda que el temps és relatiu." }
-];
+];*/
 
 // Variable global contador para asignar IDs únicos a nuevas cartas
-let formulariId = cartesSimulades.length + 1;
+//let formulariId = cartesSimulades.length + 1;
 
 function saluda() {
     alert("Hola, crack!");
@@ -25,28 +25,34 @@ function inicializar() {
     const info = document.querySelector(".info");
     if (info) info.style.color = "#2c3e50";
 
+
     // Listener del formulario
-    const form = document.querySelector("form");
+    const form = document.querySelector("#formCarta");
     if (form) {
         form.addEventListener("submit", (event) => {
             event.preventDefault();
-            if (crearCarta()) {
-                form.reset();
-            }
+            crearCarta();
+            
         });
     }
 
     const btnAfegir = document.querySelector("#btnAfegir");
     if (btnAfegir) {
-        btnAfegir.addEventListener("click", () => {
-            cartesSimulades.push({
-                id: formulariId++,
-                remitent: "Carter " + (cartesSimulades.length + 1),
-                destinatari: "Anònim",
-                contingut: "Aquesta carta s'acaba de crear dinàmicament!"
+
+        btnAfegir.addEventListener("click", async () => {
+            await fetch('http://127.0.0.1:8000/cartas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    remitent: "Cartero anonimo",
+                    destinatari: "El que lo lea.",
+                    contingut: "Un mensaje oculto."
+                })
             });
-            renderitzarCartes(cartesSimulades);
-        });
+
+            carregarCartes();
+        })
+
     }
 
     // Delegación de eventos para eliminar cartas (funciona en tarjetas y en tabla)
@@ -62,6 +68,8 @@ function inicializar() {
     const taulaCartes = document.querySelector("#taulaCartes");
 
     if (btnMostrarTaula && taulaCartes) {
+
+
         btnMostrarTaula.addEventListener("click", () => {
             if (taulaCartes.style.display === "none" || taulaCartes.style.display === "") {
                 taulaCartes.style.display = "table";
@@ -72,12 +80,22 @@ function inicializar() {
             }
         });
     }
+    // Buscamos el cuerpo de la tabla para la delegación de eventos
+    const cosTaula = document.querySelector("#cosTaula");
 
-    // Renderizado del estado inicial dentro de inicializar()
-    renderitzarCartes(cartesSimulades);
+    // Si la tabla existe, le añadimos un escuchador de clics
+    if (cosTaula) {
+        cosTaula.addEventListener("click", (event) => {
+            // Comprobamos si el elemento clicado tiene la clase del botón de eliminar
+            if (event.target.classList.contains("btnEliminar")) {
+                const id = event.target.dataset.id; // Obtenemos el ID guardado en data-id
+                EliminarCarta(id);                  // Llamamos a la función para borrarla del backend
+            }
+        });
+    }
 }
 
-function crearCarta() {
+async function crearCarta() {
     const remitentInput = document.querySelector("#remitent");
     const destinatariInput = document.querySelector("#destinatari");
     const contingutInput = document.querySelector("#contingut");
@@ -91,21 +109,68 @@ function crearCarta() {
         return false;
     }
 
-    cartesSimulades.push({
-        id: formulariId++,
-        remitent: remitent,
-        destinatari: destinatari,
-        contingut: contingut
-    });
+    try {
+        // Corregida la IP y el paréntesis del fetch
+        const response = await fetch('http://127.0.0.1:8000/cartas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                remitent: remitent,
+                destinatari: destinatari,
+                contingut: contingut
+            })
+        });
 
-    renderitzarCartes(cartesSimulades);
-    return true;
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        // 1. Limpiamos los campos del formulario tras un envío correcto
+        remitentInput.value = "";
+        destinatariInput.value = "";
+        contingutInput.value = "";
+
+        // 2. Refrescamos la lista de cartas des del servidor
+         carregarCartes();
+
+    } catch (error) {
+        console.error('Error en crear la carta:', error);
+        alert("No s'ha pogut enviar la carta.");
+    }
 }
 
-function EliminarCarta(id) {
-    const idNumero = Number(id);
-    cartesSimulades = cartesSimulades.filter(carta => carta.id !== idNumero);
-    renderitzarCartes(cartesSimulades);
+async function EliminarCarta(id) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/cartas/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error en eliminar la carta: ${response.status}`);
+        }
+
+        // Refresquem la llista immediatament des del servidor
+        carregarCartes();
+
+    } catch (error) {
+        console.error('Error eliminant la carta:', error);
+    }
+}
+
+async function carregarCartes() {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/cartas');
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        const cartes = await response.json();
+        renderitzarCartes(cartes);   // passa les cartes rebudes
+    } catch (error) {
+        console.error('Error carregant cartes:', error);
+        alert("No s'han pogut carregar les cartes. Comprova que el servidor està en marxa.");
+    }
 }
 
 function renderitzarCartes(cartes) {
@@ -160,9 +225,14 @@ function renderitzarCartes(cartes) {
     }
 }
 
+
 // Inicialización de la app
 if (typeof document !== 'undefined') {
-    document.addEventListener("DOMContentLoaded", inicializar);
+    document.addEventListener("DOMContentLoaded", () => {
+    inicializar();
+    carregarCartes();
+});
+
 }
 
-export { renderitzarCartes };
+export { renderitzarCartes, carregarCartes};

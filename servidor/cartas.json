@@ -1,10 +1,56 @@
 [
   {
-    "remitent": "Victor",
-    "destinatari": "Github",
-    "contingut": "prueba para pasar el test",
-    "personatge": "string",
-    "id": 1
+    "remitent": "Cartero anonimo",
+    "destinatari": "El que lo lea.",
+    "contingut": "Un mensaje oculto.",
+    "id": 5
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "id": 4
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "id": 5
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "id": 5
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "id": 6
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "id": 7
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "id": 8
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "id": 9
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "id": 10
   }
-
 ]
