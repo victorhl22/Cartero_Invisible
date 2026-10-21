@@ -59,14 +59,29 @@ test('carregarCartes carrega les cartes correctament i actualitza el DOM', async
 
 
 test('carregarCartes mostra un alert si falla la xarxa', async () => {
-    // Mockeamos fetch para que simule un error de red (ej: servidor apagado)
-    global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+    const consoleSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => { });
 
 
-    // Ejecutamos la función
-    await carregarCartes();
+    try {
+        global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
 
 
-    // Comprobamos que se ha llamado a alert con el mensaje exacto de tu código
-    expect(global.alert).toHaveBeenCalledWith("No s'han pogut carregar les cartes. Comprova que el servidor està en marxa.");
+        await carregarCartes();
+
+
+        expect(global.alert).toHaveBeenCalledWith(
+            "No s'han pogut carregar les cartes. Comprova que el servidor està en marxa."
+        );
+
+
+        expect(consoleSpy).toHaveBeenCalledWith(
+            'Error carregant cartes:',
+            expect.any(Error)
+        );
+    } finally {
+        consoleSpy.mockRestore();
+    }
 });
+
