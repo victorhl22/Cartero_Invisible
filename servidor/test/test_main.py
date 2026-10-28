@@ -80,3 +80,18 @@ async def test_get_cartes():
         response = await ac.get("/cartas")
         assert response.status_code == 200
         assert isinstance(response.json(), list)
+
+@pytest.mark.asyncio
+async def test_update_carta():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        payload = {"remitent": "Nou", "destinatari": "Nou", "contingut": "Nou" }
+        response = await ac.put("/cartas/2", json=payload)
+        assert response.status_code == 200
+        assert response.json()["remitent"] == "Nou"
+
+@pytest.mark.asyncio
+async def test_update_carta_not_found():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        payload = {"remitent": "X", "destinatari": "X", "contingut": "X" }
+        response = await ac.put("/cartas/999", json=payload)
+        assert response.status_code == 404

@@ -1,44 +1,32 @@
 [
   {
-    "remitent": "Cartero anonimo",
-    "destinatari": "El que lo lea.",
-    "contingut": "Un mensaje oculto.",
-    "id": 3
-  },
-  {
-    "remitent": "Cartero anonimo",
-    "destinatari": "El que lo lea.",
-    "contingut": "Un mensaje oculto.",
-    "id": 4
-  },
-  {
-    "remitent": "Cartero anonimo",
-    "destinatari": "El que lo lea.",
-    "contingut": "Un mensaje oculto.",
-    "id": 5
-  },
-  {
-    "remitent": "Pau",
-    "destinatari": "Anna",
-    "contingut": "Hola Anna!",
+    "remitent": "Carter Anònim",
+    "destinatari": "alguien posiblemente",
+    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
     "id": 6
   },
   {
-    "remitent": "Test",
-    "destinatari": "Test",
-    "contingut": "Test",
-    "id": 7
-  },
-  {
-    "remitent": "Pau",
-    "destinatari": "Anna",
-    "contingut": "Hola Anna!",
-    "id": 7
-  },
-  {
-    "remitent": "Test",
-    "destinatari": "Test",
-    "contingut": "Test",
+    "remitent": "Carter Anònim",
+    "destinatari": "alguien posiblemente",
+    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
     "id": 8
+  },
+  {
+    "remitent": "Carter Anònim",
+    "destinatari": "alguien posiblemente",
+    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "id": 5
+  },
+  {
+    "remitent": "Carter Anònim",
+    "destinatari": "alguien posiblemente",
+    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "id": 6
+  },
+  {
+    "id": 7,
+    "remitent": "Audiencia",
+    "destinatari": "jorge",
+    "contingut": "esta editada"
   }
 ]

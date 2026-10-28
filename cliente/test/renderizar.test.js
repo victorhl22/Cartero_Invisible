@@ -5,8 +5,8 @@ import { renderitzarCartes } from '../script.js';
 
 test('renderitza les cartes correctament', () => {
     const cartes = [
-        { id: 1, remitent: 'Maria', contingut: 'Hola!' },
-        { id: 2, remitent: 'Joan', contingut: 'Com estàs?' }
+        { id: 1, remitent: 'Maria', destinatari: 'Jaume', contingut: 'Hola!' },
+        { id: 2, remitent: 'Joan', destinatari: 'Jordi', contingut: 'Com estàs?' }
     ];
     document.body.innerHTML = `<div id="contenidorCartes"></div>`;
 
@@ -15,5 +15,10 @@ test('renderitza les cartes correctament', () => {
     const cartesElements = document.querySelectorAll('.carta');
     expect(cartesElements.length).toBe(2);
     expect(cartesElements[0].querySelector('h3').textContent).toBe('De: Maria');
-    expect(cartesElements[0].querySelector('p').textContent).toBe('Hola!');
+
+    const paragrafs = cartesElements[0].querySelectorAll('p');
+
+    expect(paragrafs[0].textContent).toBe('Per a: Jaume'); // Primer <p>
+    expect(paragrafs[1].textContent).toBe('Hola!');        // Segundo <p>
+
 });

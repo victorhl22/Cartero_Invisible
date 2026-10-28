@@ -27,6 +27,44 @@ body {
   cursor: pointer;
 }
 
+#btnGuardarModal {
+  box-sizing: border-box;
+  display: inline;
+  margin: 10px auto;
+  margin-top: 20px;
+  padding: 10px;
+  color: #0f010d;
+  background-color: #d80d9b;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#btnCancelarModal {
+  box-sizing: border-box;
+  display: inline;
+  margin: 10px auto;
+  margin-top: 20px;
+  padding: 10px;
+  color: #0f010d;
+  background-color: #d80d9b;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#formEditarCarta{
+
+  background-color: #d80d9b;
+  position: relative;
+  margin: 8x auto;
+  width: 90%;
+  border-radius: 12px;
+  max-width: 500px;
+  margin-top: 20px;
+  padding: 24px;
+  color: #0f010d;
+  border-radius: 8px;
+}
+
 /* ==========================================
    Estils de la Taula (#taulaCartes)
    ========================================== */
@@ -87,6 +125,14 @@ body {
   z-index: 1000; /* Comentario cerrado correctamente */
 }
 
+#buzon::after {
+    content: "😃";
+    font-size: 3rem;
+    position: absolute;
+    top: -20px;
+    right: -10px;
+}
+
 /* Cambiado a .info (clase) para coincidir con la etiqueta <h2 class="info"> */
 .info {
   font-size: 2.5rem;
@@ -127,6 +173,16 @@ section:first-child {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.carta::before {
+    content: "✉️";
+    box-sizing: border-box;
+    font-size: 2rem;
+    background-color: #0f020f;
+    display: block;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
 #btnSaluda {
   box-sizing: border-box;
   display: block;
@@ -150,6 +206,18 @@ section:first-child {
   padding: 8px 12px;
   color: #ffffff;
   background-color: #e20a0a;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btnEditar {
+ box-sizing: border-box;
+  padding: 8px 12px;
+  display: inline;
+  margin: 10px;
+  color: #ffffff;
+  background-color: #0ae247;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -188,4 +256,136 @@ footer {
   right: 0;
   bottom: 0;
   position: fixed;
+}
+
+#modalEditar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 1, 13, 0.6); /* Fondo oscuro con el tono base #0f010d */
+  display: none; /* Se activa con display: flex desde JS */
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* Por encima del #buzon (z-index: 1000) */
+}
+
+.modal-contenido {
+  position: relative;
+  background-color: #ffffff;
+  border: 2px solid #d80d9b;
+  border-radius: 12px;
+  padding: 25px 30px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
+
+.modal-contenido h2 {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.8rem;
+  border-bottom: 2px solid #eab6ea;
+  padding-bottom: 10px;
+}
+
+/* Botón 'X' para cerrar el modal */
+#btnCerrarModal {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+#btnCerrarModal:hover {
+  color: #e20a0a;
+}
+
+/* ==========================================
+   BREAKPOINTS / DISSENY RESPONSIVE
+   ========================================== */
+
+/* 1. Mòbil (fins a 768px) */
+@media (max-width: 768px) {
+  h1, .info {
+    font-size: 1.8rem;
+  }
+
+  /* Reducció de la bústia flotant per a pantalles petites */
+  #buzon {
+    padding: 18px;
+    font-size: 2rem;
+    bottom: 70px;
+    right: 15px;
+  }
+
+  #buzon::after {
+    font-size: 1.8rem;
+    top: -12px;
+    right: -5px;
+  }
+
+  /* Adaptació de la taula en pantalles estretes */
+  #taulaCartes th,
+  #taulaCartes td {
+    padding: 8px 6px;
+    font-size: 0.85rem;
+  }
+
+  .contingut-cell {
+    max-width: 100px;
+  }
+
+  /* Botons full-width en mòbil */
+  #btnMostrarTaula,
+  #btnSaluda,
+  #btnAfegir {
+    width: 90%;
+    padding: 15px;
+  }
+}
+
+/* 2. Tauleta (769px a 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  h1, .info {
+    font-size: 2.2rem;
+  }
+
+  #buzon {
+    padding: 28px;
+    font-size: 2.5rem;
+    bottom: 60px;
+  }
+
+  .contingut-cell {
+    max-width: 160px;
+  }
+}
+
+/* 3. Escriptori (a partir de 1025px) */
+@media (min-width: 1025px) {
+  /* Limitació d'amplada central per a monitors grans */
+  section {
+    max-width: 1200px;
+    margin: 20px auto;
+  }
+
+  #taulaCartes {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .carta {
+    max-width: 800px;
+    margin: 20px auto;
+  }
 }
