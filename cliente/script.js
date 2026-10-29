@@ -29,7 +29,7 @@ function inicializar() {
                         contingut: "Aquesta carta s'acaba de crear dinàmicament!"
                     })
                 });
-                 carregarCartes();
+                carregarCartes();
             } catch (error) {
                 console.error("Error al afegir carta de prova:", error);
             }
@@ -132,7 +132,7 @@ function inicializar() {
 
             const modalEditar = document.querySelector("#modalEditar");
             if (modalEditar) modalEditar.style.display = "none";
-             carregarCartes();
+            carregarCartes();
         });
     }
 
@@ -147,7 +147,21 @@ function inicializar() {
 
     if (btnCerrarModal) btnCerrarModal.addEventListener("click", tancarModal);
     if (btnCancelarModal) btnCancelarModal.addEventListener("click", tancarModal);
+
+        // --- Tema y memoria del navegador ---
+    aplicarTemaGuardat();
+    preomplirUltimDestinatari();
+    recuperarCartaEnProces();
+
+    const btnTema = document.querySelector("#btnTema");
+    if (btnTema) btnTema.addEventListener("click", canviarTema);
+
+    const campContingut = document.querySelector("#contingut");
+    if (campContingut) {
+        campContingut.addEventListener("input", (e) => guardarCartaEnProces(e.target.value));
+    }
 }
+
 
 async function crearCarta() {
     const remitentInput = document.querySelector("#remitent");
@@ -174,11 +188,16 @@ async function crearCarta() {
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
+        // Solo si el envío ha ido bien: guardar en el navegador
+        guardarUltimPersonatge(destinatari);
+        sessionStorage.removeItem("cartaEnProces");
+
+        // Vaciar los campos (después de guardar, para no perder el valor)
         remitentInput.value = "";
         destinatariInput.value = "";
         contingutInput.value = "";
 
-         carregarCartes();
+        carregarCartes();
 
     } catch (error) {
         console.error('Error en crear la carta:', error);
@@ -196,7 +215,7 @@ async function eliminarCarta(id) {
             throw new Error(`Error en eliminar la carta: ${response.status}`);
         }
 
-         carregarCartes();
+        carregarCartes();
 
     } catch (error) {
         console.error('Error eliminant la carta:', error);
@@ -251,12 +270,12 @@ function renderitzarCartes(cartes) {
 
             const btnEliminar = document.createElement("button");
             btnEliminar.textContent = "Eliminar";
-            btnEliminar.className = "btnEliminar"; 
+            btnEliminar.className = "btnEliminar";
             btnEliminar.dataset.id = carta.id;
 
             const btnEditar = document.createElement("button");
             btnEditar.textContent = "Editar";
-            btnEditar.className = "btnEditar"; 
+            btnEditar.className = "btnEditar";
             btnEditar.dataset.id = carta.id;
 
             divCarta.appendChild(titol);
@@ -298,6 +317,38 @@ if (typeof document !== 'undefined') {
         inicializar();
         carregarCartes();
     });
+}
+
+export function aplicarTemaGuardat() {
+    if (localStorage.getItem("tema") === "fosc") {
+        document.body.classList.add("tema-fosc");
+    }
+}
+
+export function canviarTema() {
+    document.body.classList.toggle("tema-fosc");
+    const esFosc = document.body.classList.contains("tema-fosc");
+    localStorage.setItem("tema", esFosc ? "fosc" : "clar");
+}
+
+export function guardarUltimDestinatari(destinatari) {
+    localStorage.setItem("ultimDestinatari", destinatari);
+}
+
+export function preomplirUltimDestinatari() {
+    const ultim = localStorage.getItem("ultimDestinatari");
+    const camp = document.querySelector("#destinatari");
+    if (ultim && camp) camp.value = ultim;
+}
+
+export function guardarCartaEnProces(text) {
+    sessionStorage.setItem("cartaEnProces", text);
+}
+
+export function recuperarCartaEnProces() {
+    const text = sessionStorage.getItem("cartaEnProces");
+    const camp = document.querySelector("#contingut");
+    if (text && camp) camp.value = text;
 }
 
 export { renderitzarCartes, carregarCartes, actualitzarCarta, eliminarCarta };      

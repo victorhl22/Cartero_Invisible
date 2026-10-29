@@ -305,6 +305,20 @@ footer {
   transition: color 0.2s ease;
 }
 
+#btnTema{
+      position: fixed;
+    top: 10px;
+    right: 10px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    color: #ffffff;
+    background-color: #f0f404;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
 #btnCerrarModal:hover {
   color: #e20a0a;
 }
@@ -384,8 +398,88 @@ footer {
     margin-right: auto;
   }
 
-  .carta {
-    max-width: 800px;
-    margin: 20px auto;
-  }
+
+  /*Canvia modo fosc*/
+
+body.tema-fosc {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.tema-fosc .info {
+    color: #bbb !important; /* tu JS pone color inline en .info */
+}
+
+body.tema-fosc #contenidorCartes > *,
+body.tema-fosc .carta {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #e0e0e0;
+}
+
+body.tema-fosc table,
+body.tema-fosc th,
+body.tema-fosc td {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #333;
+}
+
+body.tema-fosc input,
+body.tema-fosc textarea,
+body.tema-fosc select {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+
+body.tema-fosc #modalEditar > * {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+body.tema-fosc button {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+/* Botón genérico (déjalo primero) */
+body.tema-fosc button {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+/* Eliminar: rojo */
+body.tema-fosc .btnEliminar {
+    background-color: #b3261e;
+    color: #fff;
+    border-color: #f2b8b5;
+}
+body.tema-fosc .btnEliminar:hover {
+    background-color: #d93025;
+}
+
+/* Editar: azul */
+body.tema-fosc .btnEditar {
+    background-color: #1a73e8;
+    color: #fff;
+    border-color: #8ab4f8;
+}
+body.tema-fosc .btnEditar:hover {
+    background-color: #4285f4;
+}
+
+/* Enviar carta: verde */
+body.tema-fosc #formCarta button[type="submit"] {
+    background-color: #2e7d32;
+    color: #fff;
+    border-color: #81c784;
+
+}
+body.tema-fosc #formCarta button[type="submit"]:hover {
+    background-color: #43a047;
+}
+
 }

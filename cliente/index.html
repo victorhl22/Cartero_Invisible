@@ -24,6 +24,8 @@
 
           <h2 class="info">Benvingut al teu buzón virtual</h2>
 
+          <button id="btnTema">Canviar fons!</button>
+
     <form id="formCarta">
 
           <input type="text" id="remitent" placeholder="El teu nom" required>
@@ -75,28 +77,36 @@
   <tbody id="cosTaula">
     <!-- Las filas se renderizan dinámicamente aquí -->
   </tbody>
+
+  
   <div id="modalEditar" style="display: none;">
   <div class="modal-contenido">
     <span id="btnCerrarModal">&times;</span>
     <h2>Editar Carta</h2>
     
     <form id="formEditarCarta">
-      <!-- Campo oculto para almacenar el ID -->
-      <input type="hidden" id="editId">
+    <input type="hidden" id="editId">
 
-      <label for="editRemitent">Remitente:</label>
-      <input type="text" id="editRemitent" required>
+    <div class="camp">
+        <label for="editRemitent">Remitente</label>
+        <input type="text" id="editRemitent">
+    </div>
 
-      <label for="editDestinatari">Destinatario:</label>
-      <input type="text" id="editDestinatari" required>
+    <div class="camp">
+        <label for="editDestinatari">Destinatario</label>
+        <input type="text" id="editDestinatari">
+    </div>
 
-      <label for="editContingut">Contenido:</label>
-      <textarea id="editContingut" required></textarea>
+    <div class="camp">
+        <label for="editContingut">Contenido</label>
+        <textarea id="editContingut" rows="5"></textarea>
+    </div>
 
-      <div class="acciones-modal">
+    <div class="botons-modal">
         <button type="submit" id="btnGuardarModal">Guardar Cambios</button>
         <button type="button" id="btnCancelarModal">Cancelar</button>
-      </div>
+    </div>
+</form>
     </form>
   </div>
 </div>
