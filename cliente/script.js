@@ -116,25 +116,40 @@ function inicializar() {
     });
 
     // Envío de cambios desde el modal
-    const formEditarCarta = document.querySelector("#formEditarCarta");
-    if (formEditarCarta) {
-        formEditarCarta.addEventListener("submit", async (event) => {
-            event.preventDefault();
+const formEditarCarta = document.querySelector("#formEditarCarta");
+if (formEditarCarta) {
+    formEditarCarta.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-            const id = document.querySelector("#editId").value;
-            const dades = {
-                remitent: document.querySelector("#editRemitent").value.trim(),
-                destinatari: document.querySelector("#editDestinatari").value.trim(),
-                contingut: document.querySelector("#editContingut").value.trim()
-            };
+        const id = document.querySelector("#editId").value;
+        const dades = {
+            remitent: document.querySelector("#editRemitent").value.trim(),
+            destinatari: document.querySelector("#editDestinatari").value.trim(),
+            contingut: document.querySelector("#editContingut").value.trim()
+        };
 
+        try {
+            // 1. Enviamos los cambios al backend
             await actualitzarCarta(id, dades);
 
+            // 2. Si usas guardarUltimDestinatari o localStorage, se puede actualizar aquí:
+            if (typeof guardarUltimDestinatari === "function") {
+                guardarUltimDestinatari(dades.destinatari);
+            }
+
+            // 3. Cerramos el modal solo si la petición tuvo éxito
             const modalEditar = document.querySelector("#modalEditar");
             if (modalEditar) modalEditar.style.display = "none";
-            carregarCartes();
-        });
-    }
+
+            // 4. Recargamos la lista esperando a que termine la promesa
+            await carregarCartes();
+
+        } catch (error) {
+            console.error("Error actualitzant la carta:", error);
+            alert("No s'ha pogut actualitzar la carta.");
+        }
+    });
+}
 
     // Botones de cierre y cancelación
     const tancarModal = () => {
@@ -165,12 +180,12 @@ function inicializar() {
 
 async function crearCarta() {
     const remitentInput = document.querySelector("#remitent");
-    const destinatariInput = document.querySelector("#destinatari");
+    const destinatariInput = document.querySelector("#destinatari") || document.querySelector("#personatge");
     const contingutInput = document.querySelector("#contingut");
 
-    const remitent = remitentInput.value.trim();
-    const destinatari = destinatariInput.value.trim();
-    const contingut = contingutInput.value.trim();
+    const remitent = remitentInput ? remitentInput.value.trim() : "";
+    const destinatari = destinatariInput ? destinatariInput.value.trim() : "";
+    const contingut = contingutInput ? contingutInput.value.trim() : "";
 
     if (remitent === "" || destinatari === "" || contingut === "") {
         alert("Tots els camps (remitent, destinatari i contingut) són obligatoris!");
@@ -188,16 +203,17 @@ async function crearCarta() {
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
-        // Solo si el envío ha ido bien: guardar en el navegador
-        guardarUltimPersonatge(destinatari);
+        // CORREGIDO: Usar la función declarada guardarUltimDestinatari
+        guardarUltimDestinatari(destinatari);
         sessionStorage.removeItem("cartaEnProces");
 
-        // Vaciar los campos (después de guardar, para no perder el valor)
-        remitentInput.value = "";
-        destinatariInput.value = "";
-        contingutInput.value = "";
+        // Vaciar campos
+        if (remitentInput) remitentInput.value = "";
+        if (destinatariInput) destinatariInput.value = "";
+        if (contingutInput) contingutInput.value = "";
 
-        carregarCartes();
+        // CORREGIDO: Esperar a que recargue la lista de cartas
+        await carregarCartes();
 
     } catch (error) {
         console.error('Error en crear la carta:', error);

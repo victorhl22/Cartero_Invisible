@@ -3,8 +3,15 @@ from pydantic import BaseModel
 import json
 import os
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 app = FastAPI()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 
 app.add_middleware(
@@ -75,14 +82,18 @@ def crear_carta(carta: Carta):
 
 
 @app.get("/cartas", status_code=status.HTTP_200_OK)
-def llistar_cartes(limit: int = 10, offset: int = 0, personatge: str = None):
+def llistar_cartes(limit: int = None, offset: int = 0, personatge: str = None):
     if personatge:
-        # Se usa c.get() para evitar un KeyError si el campo no existe en alguna carta
         cartesFiltrades = [c for c in cartes if c.get("personatge") == personatge]
     else:
         cartesFiltrades = cartes
     
-    return cartesFiltrades[offset:offset + limit]
+    # Si se pasa un límite específico se aplica el recorte, si no, devuelve la lista completa
+    if limit is not None:
+        return cartesFiltrades[offset:offset + limit]
+    
+    return cartesFiltrades[offset:]
+
 @app.delete("/cartas/{id}", status_code=status.HTTP_200_OK)
 def eliminar_carta(id: int):
     for c in cartes:
@@ -107,4 +118,9 @@ def actualitzar_carta(id: int, carta: Carta):
             return cartes[i]
     raise HTTPException(status_code=404, detail="Carta no trobada")
 
-
+@app.get("/config",  status_code=status.HTTP_200_OK)
+def config():
+    return {
+        "debug": DEBUG,
+        "ia_configurada": GEMINI_API_KEY is not None and GEMINI_API_KEY != ""
+    }

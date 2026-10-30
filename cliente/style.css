@@ -69,6 +69,13 @@ body {
    Estils de la Taula (#taulaCartes)
    ========================================== */
 
+ #contenidorCartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
 #taulaCartes {
   width: 100%;
   border-collapse: collapse;
@@ -162,15 +169,17 @@ section:first-child {
 }
 
 .carta {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Mantiene los botones o pie al final */
   border: 1px solid #000000;
   padding: 0.8rem;
   width: 100%;
   box-sizing: border-box;
-  margin: 20px 0;
   border-radius: 8px;
   background-color: #eab6ea;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 100%; /* Fuerza a que todas las cartas de una misma fila midan lo mismo */
 }
 
 .carta::before {
@@ -327,11 +336,13 @@ footer {
    BREAKPOINTS / DISSENY RESPONSIVE
    ========================================== */
 
-/* 1. Mòbil (fins a 768px) */
-@media (max-width: 768px) {
-  h1, .info {
-    font-size: 1.8rem;
+/* 3. Control granular para pantallas móviles */
+@media (max-width: 600px) {
+  #contenidorCartes {
+    grid-template-columns: 1fr; /* Una sola columna en dispositivos móviles */
+    gap: 1rem;
   }
+}
 
   /* Reducció de la bústia flotant per a pantalles petites */
   #buzon {
@@ -365,7 +376,7 @@ footer {
     width: 90%;
     padding: 15px;
   }
-}
+
 
 /* 2. Tauleta (769px a 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {

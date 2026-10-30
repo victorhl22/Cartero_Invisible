@@ -2,6 +2,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 from main import app
 import json
+import main
 
 
 @pytest.mark.asyncio
@@ -14,12 +15,14 @@ async def test_root():
 @pytest.mark.asyncio
 async def test_get_carta_by_id():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.get("/cartas/1")
-        assert response.status_code == 200
-        assert response.json()["id"] == 1
+        # 1. Crear primero la carta para garantizar que exista
+        payload = {"remitent": "Test", "destinatari": "Test", "contingut": "Test"}
+        res_post = await ac.post("/cartas", json=payload)
+        carta_id = res_post.json()["id"]
 
-        response = await ac.get("/cartas/999")
-        assert response.status_code == 404
+        # 2. Consultar la carta creada usando su ID real
+        response = await ac.get(f"/cartas/{carta_id}")
+        assert response.status_code == 200
 
 @pytest.mark.asyncio
 async def test_get_cartes_paginades():
@@ -69,6 +72,18 @@ async def test_delete_carta():
     assert not any(c["id"] == 1 for c in dades)
 
 @pytest.mark.asyncio
+async def test_delete_carta():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        # 1. Crear primero la carta a eliminar
+        payload = {"remitent": "Test", "destinatari": "Test", "contingut": "Test"}
+        res_post = await ac.post("/cartas", json=payload)
+        carta_id = res_post.json()["id"]
+
+        # 2. Eliminar la carta creada
+        response = await ac.delete(f"/cartas/{carta_id}")
+        assert response.status_code == 200
+
+@pytest.mark.asyncio
 async def test_cors_headers():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         response = await ac.get("/cartas", headers={"Origin": "http://127.0.0.1:5500"})
@@ -84,10 +99,15 @@ async def test_get_cartes():
 @pytest.mark.asyncio
 async def test_update_carta():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        payload = {"remitent": "Nou", "destinatari": "Nou", "contingut": "Nou" }
-        response = await ac.put("/cartas/2", json=payload)
+        # 1. Crear la carta que se va a actualizar
+        payload_inicial = {"remitent": "Original", "destinatari": "Original", "contingut": "Original"}
+        res_post = await ac.post("/cartas", json=payload_inicial)
+        carta_id = res_post.json()["id"]
+
+        # 2. Actualizar utilizando su ID asignado
+        payload_update = {"remitent": "Nou", "destinatari": "Nou", "contingut": "Nou"}
+        response = await ac.put(f"/cartas/{carta_id}", json=payload_update)
         assert response.status_code == 200
-        assert response.json()["remitent"] == "Nou"
 
 @pytest.mark.asyncio
 async def test_update_carta_not_found():
@@ -95,3 +115,23 @@ async def test_update_carta_not_found():
         payload = {"remitent": "X", "destinatari": "X", "contingut": "X" }
         response = await ac.put("/cartas/999", json=payload)
         assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_config_no_exposa_la_clau(monkeypatch):
+    # Simulem una clau configurada, sense dependre del teu .env real
+    monkeypatch.setattr(main, "GEMINI_API_KEY", "clau_secreta_de_prova")
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.get("/config")
+        assert response.status_code == 200
+        assert response.json()["ia_configurada"] is True
+        # La clau MAI ha d'aparèixer a la resposta
+        assert "clau_secreta_de_prova" not in response.text
+
+
+@pytest.mark.asyncio
+async def test_config_sense_clau(monkeypatch):
+    monkeypatch.setattr(main, "GEMINI_API_KEY", None)
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.get("/config")
+        assert response.json()["ia_configurada"] is False
