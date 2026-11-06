@@ -15,6 +15,22 @@ body {
   background-color: #eab6ea;
 }
 
+#benvinguda {
+  font-size: 1.2rem;
+  color: #e62472;
+  margin-top: 10px;
+  margin: 20px;
+}
+
+#btnBorrarCarnet{
+    box-sizing: border-box;
+    padding: 10px 12px;
+    color: #ffffff;
+    background-color: #f40404;
+    border-radius: 6px;
+    margin: 20px;
+}
+
 #btnMostrarTaula {
   box-sizing: border-box;
   display: block;
@@ -63,6 +79,141 @@ body {
   padding: 24px;
   color: #0f010d;
   border-radius: 8px;
+}
+
+
+#cookieDisplay {
+  font-size: 0.95rem;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+#valorCookie {
+  font-family: monospace;
+  font-weight: bold;
+  color: #d80d9b;
+}
+
+body.tema-fosc #cookieDisplay {
+  color: #e0e0e0;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.tema-fosc #valorCookie {
+  color: #81c784;
+}
+
+
+/* ==========================================
+   Estilos del Formulario Principal (#formCarta)
+   ========================================== */
+
+#formCarta {
+  background-color: #ffffff;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+  
+  /* Flexbox para estructurar verticalmente con espaciado uniforme */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box; /* Garantiza que padding y border se incluyan en el ancho */
+}
+
+/* Campos de entrada (inputs y textarea) */
+#formCarta input[type="text"],
+#formCarta textarea {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #333333;
+  background-color: #f9f9f9;
+  border: 1.5px solid #cccccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* Altura y comportamiento del textarea */
+#formCarta textarea {
+  min-height: 120px;
+  resize: vertical; /* Permite redimensionar solo verticalmente */
+}
+
+/* Pseudoclase :focus para resaltar el campo activo al hacer clic */
+#formCarta input[type="text"]:focus,
+#formCarta textarea:focus {
+  outline: none;
+  border-color: #d80d9b;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(216, 13, 155, 0.15);
+}
+
+/* Botón de envío */
+#formCarta button[type="submit"] {
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #d80d9b;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Pseudoclase :hover para feedback visual en el botón */
+#formCarta button[type="submit"]:hover {
+  background-color: #b00a7e;
+  transform: translateY(-1px);
+}
+
+#formCarta button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* ==========================================
+   Adaptación al Tema Oscuro (Semana 7)
+   ========================================== */
+
+body.tema-fosc #formCarta {
+  background-color: #1e1e1e;
+  border-color: #333333;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+body.tema-fosc #formCarta input[type="text"],
+body.tema-fosc #formCarta textarea {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444444;
+}
+
+body.tema-fosc #formCarta input[type="text"]:focus,
+body.tema-fosc #formCarta textarea:focus {
+  border-color: #81c784;
+  background-color: #333333;
+  box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.2);
+}
+
+body.tema-fosc #formCarta button[type="submit"] {
+  background-color: #2e7d32;
+  color: #ffffff;
+  border: 1px solid #81c784;
+}
+
+body.tema-fosc #formCarta button[type="submit"]:hover {
+  background-color: #43a047;
 }
 
 /* ==========================================
@@ -120,7 +271,7 @@ body {
    ========================================== */
 
 #buzon {
-  position: fixed;
+ position: fixed;
   bottom: 60px;
   right: 20px;
   background: #f16ed7;
@@ -132,6 +283,7 @@ body {
   z-index: 1000; /* Comentario cerrado correctamente */
 }
 
+
 #buzon::after {
     content: "😃";
     font-size: 3rem;
@@ -139,6 +291,8 @@ body {
     top: -20px;
     right: -10px;
 }
+
+
 
 /* Cambiado a .info (clase) para coincidir con la etiqueta <h2 class="info"> */
 .info {

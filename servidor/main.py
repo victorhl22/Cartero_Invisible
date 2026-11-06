@@ -1,9 +1,12 @@
-from fastapi import FastAPI, HTTPException, status
+
+from fastapi import FastAPI, HTTPException, status, Request, Response
 from pydantic import BaseModel
 import json
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+
+
 
 
 load_dotenv()
@@ -43,8 +46,12 @@ class Carta(BaseModel):
     remitent: str
     destinatari: str
     contingut: str
+    usuari_id: str | None = None      # nou: opcional
 
 cartes = cargar_cartes();
+
+def nou_id():
+    return max((c["id"] for c in cartes), default=0) + 1
 
 #El get general.
 
@@ -124,3 +131,32 @@ def config():
         "debug": DEBUG,
         "ia_configurada": GEMINI_API_KEY is not None and GEMINI_API_KEY != ""
     }
+
+
+@app.post("/cartas", status_code=201)
+def crear_carta(carta: Carta, request: Request):
+    nova_carta = carta.model_dump()
+    nova_carta["id"] = nou_id()
+    nova_carta["usuari_id"] = request.cookies.get("usuari_id")  # None si no hay cookie
+    cartes.append(nova_carta)
+    guardar_cartes(cartes)
+    return nova_carta
+
+@app.post("/login")
+def login_simulat(nom_usuari: str, response: Response):
+    response.set_cookie(key="usuari_id", value=nom_usuari, max_age=30*24*60*60, path="/")
+    return {"missatge": f"Benvingut, {nom_usuari}!"}
+
+@app.get("/perfil")
+def perfil(request: Request):
+    usuari = request.cookies.get("usuari_id")
+    if not usuari:
+        raise HTTPException(status_code=401, detail="No hi ha sessió activa")
+    # Retorna l'ID i les seves cartes
+    cartes_usuari = [c for c in cartes if c.get("usuari_id") == usuari]
+    return {"usuari_id": usuari, "cartes": cartes_usuari}
+
+@app.delete("/logout")
+def logout(response: Response):
+    response.delete_cookie(key="usuari_id", path="/")   # la caduca automàticament
+    return {"missatge": "Sessió tancada"}

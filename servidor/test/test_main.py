@@ -1,3 +1,5 @@
+from urllib import response
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 from main import app
@@ -64,16 +66,6 @@ async def test_persistencia_post():
 @pytest.mark.asyncio
 async def test_delete_carta():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.delete("/cartas/1")
-        assert response.status_code == 200
-
-    with open("cartas.json", "r") as f:
-        dades = json.load(f)
-    assert not any(c["id"] == 1 for c in dades)
-
-@pytest.mark.asyncio
-async def test_delete_carta():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         # 1. Crear primero la carta a eliminar
         payload = {"remitent": "Test", "destinatari": "Test", "contingut": "Test"}
         res_post = await ac.post("/cartas", json=payload)
@@ -82,6 +74,11 @@ async def test_delete_carta():
         # 2. Eliminar la carta creada
         response = await ac.delete(f"/cartas/{carta_id}")
         assert response.status_code == 200
+
+        # 3. Comprobar que ya no existe
+        res_get = await ac.get(f"/cartas/{carta_id}")
+        assert res_get.status_code == 404
+
 
 @pytest.mark.asyncio
 async def test_cors_headers():
@@ -135,3 +132,44 @@ async def test_config_sense_clau(monkeypatch):
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         response = await ac.get("/config")
         assert response.json()["ia_configurada"] is False
+
+#Semana 8 test#
+
+@pytest.mark.asyncio
+async def test_set_cookie_login():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.post("/login", params={"nom_usuari": "user_test"})
+        assert response.status_code == 200
+        assert "set-cookie" in response.headers      # ⭐ el servidor estableix la cookie
+
+@pytest.mark.asyncio
+async def test_get_cookie_perfil():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        ac.cookies.set("usuari_id", "user_test")     # simulem que el navegador envia la cookie
+        response = await ac.get("/perfil")
+        assert response.status_code == 200
+        assert response.json()["usuari_id"] == "user_test"
+
+@pytest.mark.asyncio
+async def test_perfil_sense_cookie():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.get("/perfil")
+        assert response.status_code == 401           # sense cookie, no hi ha perfil
+
+@pytest.mark.asyncio
+async def test_post_associa_la_carta_a_l_usuari():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        payload = {"remitent": "Pau",
+                    "destinatari": "Anna", 
+                    "contingut": "Hola", 
+                    "personatge": "Einstein"
+                    }
+        
+        # Enviamos la cabecera Cookie directamente en la petición POST
+        response = await ac.post("/cartas", json=payload, headers={"cookie": "usuari_id=user_test"})
+        assert response.status_code == 201
+        assert response.json()["usuari_id"] == "user_test"
+        
+        # Enviamos la cabecera Cookie también en la petición GET
+        perfil = (await ac.get("/perfil", headers={"cookie": "usuari_id=user_test"})).json()
+        assert response.json()["id"] in [c["id"] for c in perfil["cartes"]]

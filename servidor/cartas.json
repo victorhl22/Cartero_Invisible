@@ -15,66 +15,353 @@
     "remitent": "Carter Anònim",
     "destinatari": "alguien posiblemente",
     "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
-    "id": 3
+    "id": 4
   },
   {
-    "remitent": "Carter Anònim",
-    "destinatari": "alguien posiblemente",
-    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "remitent": "victor",
+    "destinatari": "raul",
+    "contingut": "es una prueba",
     "id": 4
   },
   {
     "remitent": "Carter Anònim",
     "destinatari": "alguien posiblemente",
     "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "usuari_id": "user_m31425ah",
     "id": 5
   },
   {
     "remitent": "Carter Anònim",
     "destinatari": "alguien posiblemente",
     "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "usuari_id": "user_m31425ah",
     "id": 6
   },
   {
     "remitent": "Carter Anònim",
     "destinatari": "alguien posiblemente",
     "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "usuari_id": "user_m31425ah",
     "id": 7
   },
   {
     "remitent": "Carter Anònim",
     "destinatari": "alguien posiblemente",
     "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "usuari_id": "user_m31425ah",
     "id": 8
   },
   {
     "remitent": "Carter Anònim",
     "destinatari": "alguien posiblemente",
     "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "usuari_id": "user_m31425ah",
     "id": 9
   },
   {
-    "remitent": "Carter Anònim",
-    "destinatari": "alguien posiblemente",
-    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
     "id": 10
   },
   {
-    "remitent": "Carter Anònim",
-    "destinatari": "alguien posiblemente",
-    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
     "id": 11
   },
   {
-    "remitent": "Carter Anònim",
-    "destinatari": "alguien posiblemente",
-    "contingut": "Aquesta carta s'acaba de crear dinàmicament!",
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
     "id": 12
   },
   {
-    "remitent": "dercik",
-    "destinatari": "raul",
-    "contingut": "hola adios chao",
-    "id": 13
+    "id": 13,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 14
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 15
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 16
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 17
+  },
+  {
+    "id": 18,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 19
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 20
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 21
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 22
+  },
+  {
+    "id": 23,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 24
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 25
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 26
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 27
+  },
+  {
+    "id": 28,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 29
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 30
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 31
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 32
+  },
+  {
+    "id": 33,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 34
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 35
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 36
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 37
+  },
+  {
+    "id": 38,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 39
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 40
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 41
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 42
+  },
+  {
+    "id": 43,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 44
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 45
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 46
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 47
+  },
+  {
+    "id": 48,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 49
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 50
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola Anna!",
+    "usuari_id": null,
+    "id": 51
+  },
+  {
+    "remitent": "Test",
+    "destinatari": "Test",
+    "contingut": "Test",
+    "usuari_id": null,
+    "id": 52
+  },
+  {
+    "id": 53,
+    "remitent": "Nou",
+    "destinatari": "Nou",
+    "contingut": "Nou"
+  },
+  {
+    "remitent": "Pau",
+    "destinatari": "Anna",
+    "contingut": "Hola",
+    "usuari_id": null,
+    "id": 54
   }
 ]

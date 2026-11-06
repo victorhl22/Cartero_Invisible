@@ -1,19 +1,25 @@
+
 function saluda() {
     alert("Hola, crack!");
 }
 
-function inicializar() {
+function inicialitzar() {
+
+    inicialitzarUsuari();
+    document.querySelector("#btnBorrarCarnet").addEventListener("click", esborrarCarnet);
+
     const boto = document.getElementById("btnSaluda");
     if (boto) boto.addEventListener("click", saluda);
 
     const titol = document.querySelector("#titolPrincipal");
     if (titol) {
-        titol.textContent = "📮 El Cartero Invisible – Setmana 3";
+        titol.textContent = "📮 El Cartero Invisible";
         titol.setAttribute("data-role", "banner");
     }
 
     const info = document.querySelector(".info");
     if (info) info.style.color = "#2c3e50";
+
 
     // Botón para añadir carta de prueba
     const btnAfegir = document.querySelector("#btnAfegir");
@@ -26,10 +32,11 @@ function inicializar() {
                     body: JSON.stringify({
                         remitent: "Carter Anònim",
                         destinatari: "alguien posiblemente",
-                        contingut: "Aquesta carta s'acaba de crear dinàmicament!"
+                        contingut: "Aquesta carta s'acaba de crear dinàmicament!",
+                        usuari_id: getCookie("usuari_id")
                     })
                 });
-                carregarCartes();
+                await carregarCartes();
             } catch (error) {
                 console.error("Error al afegir carta de prova:", error);
             }
@@ -84,86 +91,7 @@ function inicializar() {
         });
     }
 
-    // Escuchador global para abrir el modal al pulsar "Editar"
-    document.addEventListener("click", async (event) => {
-        if (event.target.classList.contains("btnEditar")) {
-            const id = event.target.dataset.id;
-            const modalEditar = document.querySelector("#modalEditar");
-
-            if (!modalEditar) {
-                console.error("No se encontró el elemento #modalEditar en el HTML");
-                alert("Error: No existe el modal en la página HTML.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/cartas/${id}`);
-                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-
-                const cartaAEditar = await response.json();
-
-                if (document.querySelector("#editId")) document.querySelector("#editId").value = cartaAEditar.id;
-                if (document.querySelector("#editRemitent")) document.querySelector("#editRemitent").value = cartaAEditar.remitent;
-                if (document.querySelector("#editDestinatari")) document.querySelector("#editDestinatari").value = cartaAEditar.destinatari;
-                if (document.querySelector("#editContingut")) document.querySelector("#editContingut").value = cartaAEditar.contingut;
-
-                modalEditar.style.display = "flex";
-            } catch (error) {
-                console.error("Error al obtener la carta para editar:", error);
-                alert("No se ha podido cargar la información de la carta desde el servidor.");
-            }
-        }
-    });
-
-    // Envío de cambios desde el modal
-const formEditarCarta = document.querySelector("#formEditarCarta");
-if (formEditarCarta) {
-    formEditarCarta.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const id = document.querySelector("#editId").value;
-        const dades = {
-            remitent: document.querySelector("#editRemitent").value.trim(),
-            destinatari: document.querySelector("#editDestinatari").value.trim(),
-            contingut: document.querySelector("#editContingut").value.trim()
-        };
-
-        try {
-            // 1. Enviamos los cambios al backend
-            await actualitzarCarta(id, dades);
-
-            // 2. Si usas guardarUltimDestinatari o localStorage, se puede actualizar aquí:
-            if (typeof guardarUltimDestinatari === "function") {
-                guardarUltimDestinatari(dades.destinatari);
-            }
-
-            // 3. Cerramos el modal solo si la petición tuvo éxito
-            const modalEditar = document.querySelector("#modalEditar");
-            if (modalEditar) modalEditar.style.display = "none";
-
-            // 4. Recargamos la lista esperando a que termine la promesa
-            await carregarCartes();
-
-        } catch (error) {
-            console.error("Error actualitzant la carta:", error);
-            alert("No s'ha pogut actualitzar la carta.");
-        }
-    });
-}
-
-    // Botones de cierre y cancelación
-    const tancarModal = () => {
-        const modalEditar = document.querySelector("#modalEditar");
-        if (modalEditar) modalEditar.style.display = "none";
-    };
-
-    const btnCerrarModal = document.querySelector("#btnCerrarModal");
-    const btnCancelarModal = document.querySelector("#btnCancelarModal");
-
-    if (btnCerrarModal) btnCerrarModal.addEventListener("click", tancarModal);
-    if (btnCancelarModal) btnCancelarModal.addEventListener("click", tancarModal);
-
-        // --- Tema y memoria del navegador ---
+    // Tema y memoria del navegador
     aplicarTemaGuardat();
     preomplirUltimDestinatari();
     recuperarCartaEnProces();
@@ -177,10 +105,85 @@ if (formEditarCarta) {
     }
 }
 
+// Escuchador global para abrir el modal al pulsar "Editar"
+document.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("btnEditar")) {
+        const id = event.target.dataset.id;
+        const modalEditar = document.querySelector("#modalEditar");
 
+        if (!modalEditar) {
+            console.error("No se encontró el elemento #modalEditar en el HTML");
+            alert("Error: No existe el modal en la página HTML.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/cartas/${id}`);
+            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+            const cartaAEditar = await response.json();
+
+            if (document.querySelector("#editId")) document.querySelector("#editId").value = cartaAEditar.id;
+            if (document.querySelector("#editRemitent")) document.querySelector("#editRemitent").value = cartaAEditar.remitent;
+            if (document.querySelector("#editDestinatari")) document.querySelector("#editDestinatari").value = cartaAEditar.destinatari;
+            if (document.querySelector("#editContingut")) document.querySelector("#editContingut").value = cartaAEditar.contingut;
+
+            modalEditar.style.display = "flex";
+        } catch (error) {
+            console.error("Error al obtener la carta para editar:", error);
+            alert("No se ha podido cargar la información de la carta desde el servidor.");
+        }
+    }
+});
+
+// Envío de cambios desde el modal
+const formEditarCarta = document.querySelector("#formEditarCarta");
+if (formEditarCarta) {
+    formEditarCarta.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const id = document.querySelector("#editId").value;
+        const dades = {
+            remitent: document.querySelector("#editRemitent").value.trim(),
+            destinatari: document.querySelector("#editDestinatari").value.trim(),
+            contingut: document.querySelector("#editContingut").value.trim()
+        };
+
+        try {
+            await actualitzarCarta(id, dades);
+
+            if (typeof guardarUltimDestinatari === "function") {
+                guardarUltimDestinatari(dades.destinatari);
+            }
+
+            const modalEditar = document.querySelector("#modalEditar");
+            if (modalEditar) modalEditar.style.display = "none";
+
+            await carregarCartes();
+        } catch (error) {
+            console.error("Error actualitzant la carta:", error);
+            alert("No s'ha pogut actualitzar la carta.");
+        }
+    });
+}
+
+// Botones de cierre y cancelación del modal
+const tancarModal = () => {
+    const modalEditar = document.querySelector("#modalEditar");
+    if (modalEditar) modalEditar.style.display = "none";
+};
+
+const btnCerrarModal = document.querySelector("#btnCerrarModal");
+const btnCancelarModal = document.querySelector("#btnCancelarModal");
+
+if (btnCerrarModal) btnCerrarModal.addEventListener("click", tancarModal);
+if (btnCancelarModal) btnCancelarModal.addEventListener("click", tancarModal);
+
+
+
+// Operaciones asíncronas con cartas
 async function crearCarta() {
     const remitentInput = document.querySelector("#remitent");
-    const destinatariInput = document.querySelector("#destinatari") || document.querySelector("#personatge");
+    const destinatariInput = document.querySelector("#destinatari");
     const contingutInput = document.querySelector("#contingut");
 
     const remitent = remitentInput ? remitentInput.value.trim() : "";
@@ -193,26 +196,28 @@ async function crearCarta() {
     }
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/cartas', {
+        const response = await fetch(`http://127.0.0.1:8000/cartas`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ remitent, destinatari, contingut })
+            body: JSON.stringify({
+                remitent,
+                destinatari,
+                contingut,
+                usuari_id: getCookie("usuari_id")
+            })
         });
 
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
-        // CORREGIDO: Usar la función declarada guardarUltimDestinatari
         guardarUltimDestinatari(destinatari);
         sessionStorage.removeItem("cartaEnProces");
 
-        // Vaciar campos
         if (remitentInput) remitentInput.value = "";
         if (destinatariInput) destinatariInput.value = "";
         if (contingutInput) contingutInput.value = "";
 
-        // CORREGIDO: Esperar a que recargue la lista de cartas
         await carregarCartes();
 
     } catch (error) {
@@ -223,16 +228,11 @@ async function crearCarta() {
 
 async function eliminarCarta(id) {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/cartas/${id}`, {
-            method: 'DELETE'
-        });
-
+        const response = await fetch(`http://127.0.0.1:8000/cartas/${id}`, { method: 'DELETE' });
         if (!response.ok) {
             throw new Error(`Error en eliminar la carta: ${response.status}`);
         }
-
-        carregarCartes();
-
+        await carregarCartes();
     } catch (error) {
         console.error('Error eliminant la carta:', error);
     }
@@ -252,7 +252,7 @@ async function actualitzarCarta(id, dades) {
 
 async function carregarCartes() {
     try {
-        const response = await fetch('http://127.0.0.1:8000/cartas');
+        const response = await fetch(`http://127.0.0.1:8000/cartas`);
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
         }
@@ -328,11 +328,27 @@ function renderitzarCartes(cartes) {
     }
 }
 
-if (typeof document !== 'undefined') {
-    document.addEventListener("DOMContentLoaded", () => {
-        inicializar();
-        carregarCartes();
-    });
+
+
+// Funciones auxiliares de Cookies y Memoria (Semana 8)
+export function getCookie(nom) {
+    const cookies = document.cookie.split("; ");
+    for (const c of cookies) {
+        const [clau, valor] = c.split("=");
+        if (clau === nom) return decodeURIComponent(valor);
+    }
+    return null;
+}
+
+export function setCookie(nom, valor, dies) {
+    const data = new Date();
+    data.setTime(data.getTime() + dies * 24 * 60 * 60 * 1000);
+    const expires = "expires=" + data.toUTCString();
+    document.cookie = `${nom}=${encodeURIComponent(valor)}; ${expires}; path=/`;
+}
+
+export function esborrarCookie(nom) {
+    document.cookie = `${nom}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
 }
 
 export function aplicarTemaGuardat() {
@@ -367,4 +383,43 @@ export function recuperarCartaEnProces() {
     if (text && camp) camp.value = text;
 }
 
-export { renderitzarCartes, carregarCartes, actualitzarCarta, eliminarCarta };      
+
+export function mostrarBenvinguda(usuariId) { 
+    const elBenvinguda = document.querySelector("#benvinguda"); 
+    if (elBenvinguda) elBenvinguda.textContent = `Benvingut de nou, ${usuariId}!`; 
+
+    const elValorCookie = document.querySelector("#valorCookie");
+    if (elValorCookie) elValorCookie.textContent = usuariId;
+}
+
+export function generarIdUsuari() { 
+    return "user_" + Math.random().toString(36).substring(2, 10); 
+}
+
+export function inicialitzarUsuari() { 
+    const existent = getCookie("usuari_id"); 
+    if (existent) { 
+        mostrarBenvinguda(existent); 
+        return existent; 
+    }
+    const nou = generarIdUsuari();
+    setCookie("usuari_id", nou, 30);
+    localStorage.setItem("usuariId", nou);
+    mostrarBenvinguda(nou);
+    return nou;
+}
+
+export function esborrarCarnet() { 
+    esborrarCookie("usuari_id"); 
+    location.reload(); 
+}
+
+// Evento de inicialización al cargar el DOM
+if (typeof document !== 'undefined') { 
+    document.addEventListener("DOMContentLoaded", () => { 
+        inicialitzar(); 
+        carregarCartes(); 
+    }); 
+}
+
+export { renderitzarCartes, carregarCartes, actualitzarCarta, eliminarCarta };
