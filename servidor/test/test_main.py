@@ -1,5 +1,3 @@
-from urllib import response
-
 import pytest
 from httpx import ASGITransport, AsyncClient
 from main import app
@@ -96,15 +94,10 @@ async def test_get_cartes():
 @pytest.mark.asyncio
 async def test_update_carta():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        # 1. Crear la carta que se va a actualizar
-        payload_inicial = {"remitent": "Original", "destinatari": "Original", "contingut": "Original"}
-        res_post = await ac.post("/cartas", json=payload_inicial)
-        carta_id = res_post.json()["id"]
-
-        # 2. Actualizar utilizando su ID asignado
-        payload_update = {"remitent": "Nou", "destinatari": "Nou", "contingut": "Nou"}
-        response = await ac.put(f"/cartas/{carta_id}", json=payload_update)
+        payload = {"remitent": "Nou", "destinatari": "Nou", "contingut": "Nou", "personatge": "Nou"}
+        response = await ac.put("/cartas/2", json=payload)
         assert response.status_code == 200
+        assert response.json()["remitent"] == "Nou"
 
 @pytest.mark.asyncio
 async def test_update_carta_not_found():
@@ -159,17 +152,10 @@ async def test_perfil_sense_cookie():
 @pytest.mark.asyncio
 async def test_post_associa_la_carta_a_l_usuari():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        payload = {"remitent": "Pau",
-                    "destinatari": "Anna", 
-                    "contingut": "Hola", 
-                    "personatge": "Einstein"
-                    }
-        
-        # Enviamos la cabecera Cookie directamente en la petición POST
-        response = await ac.post("/cartas", json=payload, headers={"cookie": "usuari_id=user_test"})
+        ac.cookies.set("usuari_id", "user_test")
+        payload = {"remitent": "Pau", "destinatari": "Anna", "contingut": "Hola", "personatge": "Einstein"}
+        response = await ac.post("/cartas", json=payload)
         assert response.status_code == 201
         assert response.json()["usuari_id"] == "user_test"
-        
-        # Enviamos la cabecera Cookie también en la petición GET
-        perfil = (await ac.get("/perfil", headers={"cookie": "usuari_id=user_test"})).json()
-        assert response.json()["id"] in [c["id"] for c in perfil["cartes"]]
+        perfil = (await ac.get("/perfil")).json()
+        assert [c["id"] for c in perfil["cartes"]] == [response.json()["id"]]

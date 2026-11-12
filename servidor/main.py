@@ -77,29 +77,26 @@ def obtenir_carta(id: int):
         status_code=404,
         detail="Carta no trobada")
 
-#No es GET sino POST y lo que hace es entregar la carta en vez de obtener-las.
-@app.post("/cartas", status_code=status.HTTP_201_CREATED)
-def crear_carta(carta: Carta):
-    nova_carta = carta.model_dump()          # converteix el model a diccionari
-    nova_carta["id"] = len(cartes) + 1  # assigna un ID únic
+
+
+@app.post("/cartas", status_code=201)
+def crear_carta(carta: Carta, request: Request):
+    nova_carta = carta.model_dump()
+    nova_carta["id"] = nou_id()
+    # La cookie té prioritat; si no arriba, ens quedem amb l'usuari_id que envia el client
+    nova_carta["usuari_id"] = request.cookies.get("usuari_id") or carta.usuari_id   # ⭐ associem la carta a l'usuari
     cartes.append(nova_carta)
-    guardar_cartes(cartes)          #Guarda la lista actualizada de cartas en el archivo JSON.
+    guardar_cartes(cartes)
     return nova_carta
 
-
-
 @app.get("/cartas", status_code=status.HTTP_200_OK)
-def llistar_cartes(limit: int = None, offset: int = 0, personatge: str = None):
+def llistar_cartes(limit: int = 100, offset: int = 0, personatge: str = None):
     if personatge:
         cartesFiltrades = [c for c in cartes if c.get("personatge") == personatge]
     else:
         cartesFiltrades = cartes
     
-    # Si se pasa un límite específico se aplica el recorte, si no, devuelve la lista completa
-    if limit is not None:
-        return cartesFiltrades[offset:offset + limit]
-    
-    return cartesFiltrades[offset:]
+    return cartesFiltrades[offset:offset + limit]
 
 @app.delete("/cartas/{id}", status_code=status.HTTP_200_OK)
 def eliminar_carta(id: int):
@@ -131,16 +128,6 @@ def config():
         "debug": DEBUG,
         "ia_configurada": GEMINI_API_KEY is not None and GEMINI_API_KEY != ""
     }
-
-
-@app.post("/cartas", status_code=201)
-def crear_carta(carta: Carta, request: Request):
-    nova_carta = carta.model_dump()
-    nova_carta["id"] = nou_id()
-    nova_carta["usuari_id"] = request.cookies.get("usuari_id")  # None si no hay cookie
-    cartes.append(nova_carta)
-    guardar_cartes(cartes)
-    return nova_carta
 
 @app.post("/login")
 def login_simulat(nom_usuari: str, response: Response):
